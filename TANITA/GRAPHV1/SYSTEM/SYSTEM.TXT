@@ -1,0 +1,2 @@
+SD,TANITA,GRAPHV1
+Do not delete, modify, nor remove this system file by yourself!
