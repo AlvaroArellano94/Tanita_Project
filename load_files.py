@@ -1,5 +1,6 @@
 from user_object import *
 import pandas as pd
+import os
 #first of all it should
 
 first_user = Person(user_id=23)
@@ -18,16 +19,24 @@ tanita_headers = ["Unknow_0","Unknow_1","Unknow_2","Unknow_3","Unknow_4","Unknow
 tanita_df = pd.read_csv(Alvaro_User_File, sep=",", header=None, names=tanita_headers)
 
 #where I got the headers info: https://github.com/cab938/tanita
-
 #first, I want to filter the columns I am interested with
 print(type(tanita_df))
 
-
-#print(tanita_df.columns)
-print(tanita_df)
-
+#print(tanita_df)
+#tanita_df.to_excel("df_new_fields_name.xlsx")
 
 
+tanita_subset = tanita_df[["Measurement_Date_value", "Measurement_Time_value", "Body_Mass_value", "BMI_value", "Global_Fat_Perc_value", "Arm_Fat_Right_Perc_value", "Arm_Fat_Left_Perc_value", "Leg_Fat_Right_Perc_value", "Leg_Fat_Left_Perc_value", "Torso_Fat_Perc_value", "Global_Muscle_Perc_value", "Arm_Muscle_Right_Perc_value", "Arm_Muscle_Left_Perc_value", "Leg_Muscle_Right_Perc_value", "Leg_Muscle_Left_Perc_value", "Torso_Muscle_Perc_value", "Estimated_Bone_Mass_value", "Visceral_Fat_Rating_value", "Daily_Calory_Intake_value", "Estimated_Metabolic_Age_value", "Global_Body_Water_Perc_value"]]
+#tanita_subset.to_excel("finally_df_tanita.xlsx")
+
+print("test")
+
+files_names_in_directory = os.listdir(file_directory)
+print(files_names_in_directory)
+
+def get_files_in_directory(files_directory):
+    files_names_in_directory = os.listdir(file_directory)
+    return files_names_in_directory
 
 
-
+#develop with mysql workbench
