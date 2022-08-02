@@ -1,6 +1,8 @@
 from user_object import *
 import pandas as pd
 import os
+from modules import get_list_files_in_directory
+from insert_body_comp import insert_Body_comp_db
 #first of all it should
 
 first_user = Person(user_id=23)
@@ -25,18 +27,13 @@ print(type(tanita_df))
 #print(tanita_df)
 #tanita_df.to_excel("df_new_fields_name.xlsx")
 
-
-tanita_subset = tanita_df[["Measurement_Date_value", "Measurement_Time_value", "Body_Mass_value", "BMI_value", "Global_Fat_Perc_value", "Arm_Fat_Right_Perc_value", "Arm_Fat_Left_Perc_value", "Leg_Fat_Right_Perc_value", "Leg_Fat_Left_Perc_value", "Torso_Fat_Perc_value", "Global_Muscle_Perc_value", "Arm_Muscle_Right_Perc_value", "Arm_Muscle_Left_Perc_value", "Leg_Muscle_Right_Perc_value", "Leg_Muscle_Left_Perc_value", "Torso_Muscle_Perc_value", "Estimated_Bone_Mass_value", "Visceral_Fat_Rating_value", "Daily_Calory_Intake_value", "Estimated_Metabolic_Age_value", "Global_Body_Water_Perc_value"]]
+tanita_subset_temp = tanita_df[["Measurement_Date_value", "Measurement_Time_value", "Body_Mass_value", "BMI_value", "Global_Fat_Perc_value", "Arm_Fat_Right_Perc_value", "Arm_Fat_Left_Perc_value", "Leg_Fat_Right_Perc_value", "Leg_Fat_Left_Perc_value", "Torso_Fat_Perc_value", "Global_Muscle_Perc_value", "Arm_Muscle_Right_Perc_value", "Arm_Muscle_Left_Perc_value", "Leg_Muscle_Right_Perc_value", "Leg_Muscle_Left_Perc_value", "Torso_Muscle_Perc_value", "Estimated_Bone_Mass_value", "Visceral_Fat_Rating_value", "Daily_Calory_Intake_value", "Estimated_Metabolic_Age_value", "Global_Body_Water_Perc_value"]]
 #tanita_subset.to_excel("finally_df_tanita.xlsx")
 
-print("test")
+new_col_names = ["Measurement_Date", "Measurement_Time", "Body_Mass", "BMI", "Global_Fat_Perc", "Arm_Fat_Right_Perc", "Arm_Fat_Left_Perc", "Leg_Fat_Right_Perc", "Leg_Fat_Left_Perc", "Torso_Fat_Perc", "Global_Muscle_Perc", "Arm_Muscle_Right_Perc", "Arm_Muscle_Left_Perc", "Leg_Muscle_Right_Perc", "Leg_Muscle_Left_Perc", "Torso_Muscle_Perc", "Estimated_Bone_Mass", "Visceral_Fat_Rating", "Daily_Calory_Intake", "Estimated_Metabolic_Age", "Global_Body_Water_Perc"]
+tanita_subset = tanita_subset_temp.set_axis(new_col_names, axis='columns')
 
-files_names_in_directory = os.listdir(file_directory)
-print(files_names_in_directory)
+first_row_tanita = tanita_subset.iloc[0]
 
-def get_files_in_directory(files_directory):
-    files_names_in_directory = os.listdir(file_directory)
-    return files_names_in_directory
-
-
-#develop with mysql workbench
+#this function needs to be passed a row that it is not into the database
+insert_Body_comp_db(1, first_row_tanita)
