@@ -36,4 +36,5 @@ tanita_subset = tanita_subset_temp.set_axis(new_col_names, axis='columns')
 first_row_tanita = tanita_subset.iloc[0]
 
 #this function needs to be passed a row that it is not into the database
-insert_Body_comp_db(1, first_row_tanita)
+#insert_Body_comp_db working correctly!!
+#######insert_Body_comp_db(1, first_row_tanita)
