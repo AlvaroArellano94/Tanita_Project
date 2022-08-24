@@ -52,3 +52,6 @@ def get_rows_from_db():
     db_body_comp_df = temp_db_body_comp_df.set_axis(new_columns_name, axis="columns")
     
     return db_body_comp_df
+
+#this function has the oldest PK of the database and it will compare with the registers in the file. It will return the rows that need to be added into the database
+def 
