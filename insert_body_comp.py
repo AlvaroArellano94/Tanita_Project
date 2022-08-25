@@ -26,7 +26,7 @@ def insert_Body_comp_db(User_id, df_row_tanita):
     Date_Measurement, Time_Measurement) \
     VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     
-    #no esta cargando bien la fecha, por esa razón debemos hacer un casting más complejo
+    #No podiamos cargar bien la fecha, por esa razón hemos tenido que hacer un casting más complejo
     date_time_obj = datetime.datetime.strptime(df_row_tanita["Measurement_Date"], '%d/%m/%Y')
     date_cast = date_time_obj.date()
 
