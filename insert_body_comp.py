@@ -3,7 +3,7 @@ import datetime
 #info to create this part: https://www.youtube.com/watch?v=91iNR0eG8kE&t=2s&ab_channel=TechWithTim
 #El dataframe que se pasa está compuesto por un solo registro. Es decir, el dataframe total, se debe filtrar por el registro que queremos introducir
 #si queremos introducir más de un registro, se debe llamar a esta función más de una vez.
-def insert_Body_comp_db(User_id, df_row_tanita):
+def insert_Body_comp_db(df_row_tanita):
     try:
         connection_to_mysql = mysql.connector.connect(host='localhost',
                                 database='Tanita_app_db',
@@ -30,7 +30,7 @@ def insert_Body_comp_db(User_id, df_row_tanita):
     date_time_obj = datetime.datetime.strptime(df_row_tanita["Measurement_Date"], '%d/%m/%Y')
     date_cast = date_time_obj.date()
 
-    data_to_insert = (User_id, float(df_row_tanita["Body_Mass"]), float(df_row_tanita["BMI"]), float(df_row_tanita["Global_Fat_Perc"]), float(df_row_tanita["Arm_Fat_Right_Perc"]),\
+    data_to_insert = (int(df_row_tanita["User_id"]), float(df_row_tanita["Body_Mass"]), float(df_row_tanita["BMI"]), float(df_row_tanita["Global_Fat_Perc"]), float(df_row_tanita["Arm_Fat_Right_Perc"]),\
         float(df_row_tanita["Arm_Fat_Left_Perc"]), float(df_row_tanita["Leg_Fat_Right_Perc"]), float(df_row_tanita["Leg_Fat_Left_Perc"]), float(df_row_tanita["Torso_Fat_Perc"]), \
         float(df_row_tanita["Global_Muscle_Perc"]), float(df_row_tanita["Arm_Muscle_Right_Perc"]), float(df_row_tanita["Arm_Muscle_Left_Perc"]), float(df_row_tanita["Leg_Muscle_Right_Perc"]),\
         float(df_row_tanita["Leg_Muscle_Left_Perc"]), float(df_row_tanita["Torso_Muscle_Perc"]), float(df_row_tanita["Estimated_Bone_Mass"]), int(df_row_tanita["Visceral_Fat_Rating"]), \

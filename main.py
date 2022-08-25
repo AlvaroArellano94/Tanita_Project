@@ -1,14 +1,9 @@
-from user_object import *
 import pandas as pd
 import os
 from modules import get_list_files_in_directory
 from insert_body_comp import insert_Body_comp_db
 #first of all it should
 
-first_user = Person(user_id=23)
-first_user.anyadir_date(date_1="23/02/2003")
-
-print(first_user.date_1)
 #primero debería chequear el directorio para ver que archivos hay subidos. Para cada uno de los archivos deberían tener asignados un usuario.
 #El mapping entre usuarios y nombre de archivos se va a cargar desde una tabla de la bbdds de MySQL. 
 #file directory from root:

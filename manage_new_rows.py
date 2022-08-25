@@ -1,4 +1,5 @@
 import pandas as pd
+from insert_body_comp import insert_Body_comp_db
 
 def get_row_oledest_date_time(df):
     #df_from_db
@@ -25,7 +26,7 @@ def get_row_oledest_date_time(df):
         return final_df_row
 
 
-#para desarrollar, vamos a generar un df ficticio
+#TEST: vamos a generar un df ficticio
 data={'User_id':[1,2,3],'Measurement_Date':['2022-04-23','2022-04-25','2022-04-25'], 'Measurement_Time':['12:06:39','20:09:39','19:44:23']}
 #transformamos el diccionario en df
 df=pd.DataFrame(data)
@@ -50,6 +51,17 @@ def get_df_to_insert(df_olest_row, df_from_file):
     else:
         return temp_df_to_insert
 
+
+#The User_id will be already into the df
+def insert_df_into_db(final_df_to_insert):
+    """
+    This function will recived a df with all the raws that wants to be inserted into the db. The function will take each individual row and inserted one by one.
+    """
+    for index in range(len(final_df_to_insert)):
+        insert_Body_comp_db(final_df_to_insert.loc[index])
+    
+
+    
     
 
 
