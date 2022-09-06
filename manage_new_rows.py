@@ -2,7 +2,6 @@ import pandas as pd
 from insert_body_comp import insert_Body_comp_db
 
 def get_row_oledest_date_time(df):
-    #df_from_db
 
     #I filter the df that is passed to get the fields that we are interested in
     df_to_work = df[['User_id','Measurement_Date', 'Measurement_Time']]
@@ -25,14 +24,14 @@ def get_row_oledest_date_time(df):
 
         return final_df_row
 
-
+"""
 #TEST: vamos a generar un df ficticio
 data={'User_id':[1,2,3],'Measurement_Date':['2022-04-23','2022-04-25','2022-04-25'], 'Measurement_Time':['12:06:39','20:09:39','19:44:23']}
 #transformamos el diccionario en df
 df=pd.DataFrame(data)
 
 print(get_row_oledest_date_time(df))
-
+"""
 #this function needs to be checked
 def get_df_to_insert(df_olest_row, df_from_file):
     max_date_oldest_row = df_olest_row["Measurement_Date"].max()
