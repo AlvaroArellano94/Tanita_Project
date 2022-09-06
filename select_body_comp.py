@@ -20,11 +20,9 @@ def get_rows_from_file(User_id, file_directory):
     new_col_names = ["Measurement_Date", "Measurement_Time", "Body_Mass", "BMI", "Global_Fat_Perc", "Arm_Fat_Right_Perc", "Arm_Fat_Left_Perc", "Leg_Fat_Right_Perc", "Leg_Fat_Left_Perc", "Torso_Fat_Perc", "Global_Muscle_Perc", "Arm_Muscle_Right_Perc", "Arm_Muscle_Left_Perc", "Leg_Muscle_Right_Perc", "Leg_Muscle_Left_Perc", "Torso_Muscle_Perc", "Estimated_Bone_Mass", "Visceral_Fat_Rating", "Daily_Calory_Intake", "Estimated_Metabolic_Age", "Global_Body_Water_Perc"]
     tanita_subset = tanita_subset_temp.set_axis(new_col_names, axis='columns')
     
-    #NEEDS TO BE TESTED BEFORE USE IT!
     tanita_subset["User_id"] = User_id
 
     return tanita_subset
-
 
 def get_PK_from_file_df_tanita(tanita_subset):
     tanita_PK_subset = tanita_subset[["User_id","Measurement_Date", "Measurement_Time"]]
@@ -32,7 +30,7 @@ def get_PK_from_file_df_tanita(tanita_subset):
     return tanita_PK_subset
 
 #this function returns a df subset of the info in the db with the PK of all the values 
-def get_rows_from_db():
+def get_rows_from_db(User_id_filter):
     try:
         connection_to_mysql = mysql.connector.connect(host='localhost',
                                 database='Tanita_app_db',
@@ -42,13 +40,11 @@ def get_rows_from_db():
         print("Error al conectar a la base de datos")
     else:
         print("Conectado a MySQL")
-        print("")
         print(connection_to_mysql)
     
-    print("Hasta aquí, todo bien!")
     cursor_select_users = connection_to_mysql.cursor()
 
-    select_string = "SELECT User_id, Date_Measurement, Time_Measurement FROM Body_Composition;"
+    select_string = f"SELECT User_id, Date_Measurement, Time_Measurement FROM Body_Composition WHERE User_id={User_id_filter};"
 
     cursor_select_users.execute(select_string)
     temp_db_body_comp_df = pd.DataFrame(cursor_select_users.fetchall())
