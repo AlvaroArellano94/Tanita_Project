@@ -24,13 +24,29 @@ def get_rows_from_file(User_id, file_directory):
 
     return tanita_subset
 
+def transform_df_from_file(extraction_df_from_file):
+    "This function adds into the dataframe a timestamp field created from two others fields."
+
+    extraction_df_from_file['Measurement_Date'] = extraction_df_from_file["Measurement_Date"].str.replace('/','-')
+
+    extraction_df_from_file['Measurement_Date'] = pd.to_datetime(extraction_df_from_file["Measurement_Date"], format='%d-%m-%Y')
+
+    extraction_df_from_file['Measurement_Date'] = extraction_df_from_file["Measurement_Date"].dt.strftime('%Y-%m-%d')  
+
+    extraction_df_from_file["Measurement_Date_Time"] = extraction_df_from_file["Measurement_Date"] +' '+ extraction_df_from_file["Measurement_Time"]
+    extraction_df_from_file["Measurement_Date_Time"] = pd.to_datetime(extraction_df_from_file["Measurement_Date_Time"])
+    print("It is done!")
+    return extraction_df_from_file
+
 def get_PK_from_file_df_tanita(tanita_subset):
     tanita_PK_subset = tanita_subset[["User_id","Measurement_Date", "Measurement_Time"]]
-
     return tanita_PK_subset
 
-#this function returns a df subset of the info in the db with the PK of all the values 
-def get_rows_from_db(User_id_filter):
+def get_rows_from_db(User_id_filter) -> object:
+    """
+    This function gets a pandas df of the PK of the table Body_Composition.
+    
+    """
     try:
         connection_to_mysql = mysql.connector.connect(host='localhost',
                                 database='Tanita_app_db',
@@ -42,14 +58,32 @@ def get_rows_from_db(User_id_filter):
         print("Conectado a MySQL")
         print(connection_to_mysql)
     
+    
     cursor_select_users = connection_to_mysql.cursor()
 
-    select_string = f"SELECT User_id, Date_Measurement, Time_Measurement FROM Body_Composition WHERE User_id={User_id_filter};"
+    check_rows_query = f"SELECT count(*) as num_rows FROM Body_Composition WHERE User_id={User_id_filter};"
 
-    cursor_select_users.execute(select_string)
-    temp_db_body_comp_df = pd.DataFrame(cursor_select_users.fetchall())
-    new_columns_name = ["User_id","Measurement_Date", "Measurement_Time"]
-    db_body_comp_df = temp_db_body_comp_df.set_axis(new_columns_name, axis="columns")
+    cursor_select_users.execute(check_rows_query)
     
-    return db_body_comp_df
+    number_of_rows = cursor_select_users.fetchall()[0][0]
+    
+    #We are going to check if the table is empty. In that case, we create a df with a very old date, in order to get all the rows.
+    if number_of_rows > 0:
+        select_string = f"SELECT User_id, Date_Time_Measurement FROM Body_Composition WHERE User_id={User_id_filter};"
+
+        cursor_select_users.execute(select_string)
+        temp_db_body_comp_df = pd.DataFrame(cursor_select_users.fetchall())
+        new_columns_name = ["User_id","Measurement_Date_Time"]
+        db_body_comp_df = temp_db_body_comp_df.set_axis(new_columns_name, axis="columns")
+        
+        return db_body_comp_df
+    
+    else:
+        # initialize data of lists.
+        invented_data = {'User_id': [User_id_filter],
+                'Measurement_Date_Time': ["10-01-1999 11:00:29"]}
+        
+        df_created = pd.DataFrame(invented_data)
+        print(df_created.astype)
+        return df_created
 
