@@ -21,8 +21,9 @@ CREATE TABLE IF NOT EXISTS Body_Composition (
     Global_body_water_perc DECIMAL(4,1) NOT NULL,
     Date_Measurement DATE,
     Time_Measurement TIME,
+    Date_Time_Measurement TIMESTAMP,
     FOREIGN KEY (User_id) REFERENCES Users(User_id),
-    PRIMARY KEY (User_id, Date_Measurement, Time_Measurement)
+    PRIMARY KEY (User_id, Date_Time_Measurement)
 );
 
 #drop table Body_Composition;
